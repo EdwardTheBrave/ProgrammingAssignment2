@@ -1,8 +1,8 @@
-## With this functions you get an easy way of creating the inverse of your matrixes and storing it in the cache of the first function.
-## Whenever you run the second function, it'll look at the cache of the first one to see if it can speed things up by using that value instead of calculating it on each call.
-## If there's no such value in the cache, it'll calculate it itself.
+## With this functions you get an easy way of creating the inverse of your matrixes and storing it in the cache so you can save some calculation time.
+## The first function is basically an auxiliary function of getters and setters.With the second one you just calculate de inverse of a matrix and stores it in the cache.
+## When calling that function again, if the result is in the cache it'll show it from there, saving some time.
 
-## This is the function that creates and stores a matrix and its inverse for later calculations.
+## This is the function that creates the getters and setters for later calculations.
 
 makeCacheMatrix <- function(x = matrix()) {
         m <- NULL
@@ -19,13 +19,13 @@ makeCacheMatrix <- function(x = matrix()) {
 }
 
 
-## This is the function that looks for the inverse of a matrix in the cache of the previous function, and if it doesn't find it, calculates it again.
+## This is the function that creates the inverse of a matrix and stores it in the cache to use it later in case the result was already calculated.
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x' whether it can take it from
         m <- x$getinverse()
         if(!is.null(m)) {
-                message("getting cached data")
+                message("getting cached data...")
                 return(m)
         }
         data <- x$get()
@@ -37,9 +37,16 @@ cacheSolve <- function(x, ...) {
 
 # Here there are two examples to run in case you want to give it a try!
 
-example_matrix_1 <- matrix(1:4, 2, 2)
-cacheSolve(makeCacheMatrix(example_matrix_1))
+m0 <- matrix(1:4, 2, 2)
+m1 <- makeCacheMatrix(m0)
+cacheSolve(m1)
 
-example_matrix_2 <- matrix(c(1,1,0,1,0,1,0,1,0), 3, 3)
-cacheSolve(makeCacheMatrix(example_matrix_2))
+#calling it again so it can take it from the cache
+cacheSolve(m1)
 
+m0.2 <- matrix(c(1,1,0,1,0,1,0,1,0), 3, 3)
+m1.2 <- makeCacheMatrix(m0.2)
+cacheSolve(m1.2)
+
+#calling it again so it can take it from the cache
+cacheSolve(m1.2)
